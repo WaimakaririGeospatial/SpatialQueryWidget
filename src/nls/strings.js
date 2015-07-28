@@ -1,6 +1,6 @@
 define({
   root: ({
-    _widgetLabel: "Spatial Select",
+    _widgetLabel: "Spatial Query Widget",
     executeQueryTip: "Click one of the following task items to execute the query.",
     invalidConfig: "Invalid configuration. Please use Query setting page to get correct configuration.",
     queryParams: "Options",

@@ -103,7 +103,7 @@ define(
                 me._toggleLoading(false);
                 bufDeferred.resolve(bufferedGeometries[0]);
             }, function (err) {
-                me._hideLoading();
+                me._toggleLoading(false);
                 bufDeferred.reject(err);
             });
             return bufDeferred.promise;

@@ -37,53 +37,22 @@
                     <div class="apply jimu-float-trailing" data-dojo-attach-point="btnApply" data-dojo-attach-event="onclick:_onBtnApplyClicked">${nls.apply}</div>
                 </div>
             </div>
+            <div data-dojo-attach-point="queryBufferSection" class="buffer-section">
+                <input type="checkbox" data-dojo-attach-point="cbxBuffer" checked="false" />
+                <label data-dojo-attach-point="queryBufferLabel">${nls.bufferTip}</label>
+                <div data-dojo-attach-point="queryBufferDistance" style="height: 30px; margin-bottom: 7px; margin-top: 7px; display: none;">
+                    <div class="buffer-distance-tip  jimu-float-leading">${nls.bufferDistance}</div>
+                    <input data-dojo-attach-point="queryBufferDistanceSelect" data-dojo-type="dijit/form/NumberSpinner" style="float: left; margin-left: 30px; width: 50%; height: 30px;"
+                           data-dojo-props='value:1,smallDelta:1,intermediateChanges:true'></input>
+                </div>
+                <div data-dojo-attach-point="querybufferUnits" style="height:30px;display:none;">
+                    <div class="buffer-units-tip jimu-float-leading">${nls.bufferUnits}</div>
+                    <select data-dojo-attach-point="queryBufferUnitsSelect" data-dojo-type="dijit/form/Select" class=" jimu-float-trailing" style="float:left;margin-left:49px;width:50%;height:30px;"></select>
+                </div>
+            </div>
             <div class="params-container" data-dojo-attach-point="paramsContainer">
-                <div class="attributes-section" data-dojo-attach-point="parametersDiv">
-                    <span style="display:block;margin-bottom:10px;">${nls.specifyParamsTip} :</span>
-                </div>
-
-                <div data-dojo-attach-point="queryBufferSection" class="buffer-section">
-
-                    <input type="checkbox" data-dojo-attach-point="cbxBuffer" checked="false" />
-                    <label data-dojo-attach-point="queryBufferLabel">${nls.bufferTip}</label>
-                    <div data-dojo-attach-point="queryBufferDistance" style="height: 30px; margin-bottom: 7px; margin-top: 7px;">
-                        <div class="buffer-distance-tip  jimu-float-leading">${nls.bufferDistance}</div>
-                        <input data-dojo-attach-point="queryBufferDistanceSelect" data-dojo-type="dijit/form/NumberSpinner" style="float: left; margin-left: 30px; width: 50%; height: 30px;"
-                               data-dojo-props='value:1,smallDelta:1,intermediateChanges:true'></input>
-                    </div>
-                    <div data-dojo-attach-point="querybufferUnits" style="height:30px;">
-                        <div class="buffer-units-tip jimu-float-leading">${nls.bufferUnits}</div>
-                        <select data-dojo-attach-point="queryBufferUnitsSelect" data-dojo-type="dijit/form/Select" class=" jimu-float-trailing" style="float:left;margin-left:49px;width:50%;height:30px;"></select>
-                    </div>
-                </div>
-
                 <div class="spatial-section" style="margin-top:20px; margin-bottom:20px;">
-                    <div hidden="hidden">
-                        <input type="checkbox" checked="checked" data-dojo-attach-point="cbxUseSpatial" data-dojo-attach-event="onclick: _onCbxUseSpatialClicked" />
-                        <label data-dojo-attach-point="useSpatialLabel">${nls.useSpatialFilter}</label>
-                    </div>
-
                     <div data-dojo-attach-point="selectSpatialDiv" style="margin-left:7px; margin-top:7px;">
-                        <table class="current-view" valign="top" cellpadding="0" cellspacing="0" hidden="hidden">
-                            <tbody>
-                                <tr class="current-extent-tr">
-                                    <td>
-                                        <input type="radio" data-dojo-attach-point="cbxUseMapExtent" data-dojo-attach-event="onclick:_onCbxUseMapExtentClicked" checked="false" />
-                                    </td>
-                                    <td class="current-extent-td">
-                                        <label data-dojo-attach-point="currentExtentLabel" class="map-extent-tip">${nls.useCurrentMapExtent}</label>
-                                    </td>
-                                </tr>
-                                <tr class="draw-graphic-tr">
-                                    <td>
-                                        <input type="radio" data-dojo-attach-point="cbxDrawGraphic" data-dojo-attach-event="onclick:_onCbxDrawGraphicClicked" checked="checked" />
-                                    </td>
-                                    <td class="draw-graphic-td">
-                                        <label data-dojo-attach-point="drawGraphicLabel" class="draw-graphic-tip">${nls.drawGraphicOnMap}</label>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                         <div class="draw-graphic" data-dojo-attach-point="drawBoxDiv" style="display:block"></div>
                     </div>
                 </div>

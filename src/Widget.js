@@ -134,7 +134,7 @@ define([
                   this.tempResultLayer.show();
               }
               var popup = domQuery(this.domNode).closest(".jimu-widget-panel")[0];
-              html.setStyle(popup, "height", "475px");
+              html.setStyle(popup, "min-height", "475px");
           },
 
           onClose: function () {
@@ -154,9 +154,6 @@ define([
           },
 
           _combineRadioCheckBoxWithLabel: function () {
-              jimuUtils.combineRadioCheckBoxWithLabel(this.cbxUseSpatial, this.useSpatialLabel);
-              jimuUtils.combineRadioCheckBoxWithLabel(this.cbxUseMapExtent, this.currentExtentLabel);
-              jimuUtils.combineRadioCheckBoxWithLabel(this.cbxDrawGraphic, this.drawGraphicLabel);
               jimuUtils.combineRadioCheckBoxWithLabel(this.cbxOperational, this.operationalLayerLabel);
               jimuUtils.combineRadioCheckBoxWithLabel(this.cbxBuffer, this.queryBufferLabel);
           },
@@ -270,13 +267,6 @@ define([
           _initSelf: function () {
               var uniqueId = jimuUtils.getRandomString();
               var cbxName = "Query_" + uniqueId;
-              this.cbxUseMapExtent.name = cbxName;
-              this.cbxDrawGraphic.name = cbxName;
-              this.paramsDijit = new Parameters({
-                  nls: this.nls
-              });
-              this.paramsDijit.placeAt(this.parametersDiv);
-              this.paramsDijit.startup();
               this.isValidConfig = this._isConfigValid();
               if (!this.isValidConfig) {
                   html.setStyle(this.queriesNode, 'display', 'none');
@@ -338,8 +328,8 @@ define([
           _registerBufferCheckBoxClick: function () {
               on(this.cbxBuffer, "change", lang.hitch(this, function () {
                   var state = this.cbxBuffer.checked ? "" : "none";
-                  //html.setStyle(this.queryBufferDistance, "display", state);
-                  //html.setStyle(this.querybufferUnits, "display", state);
+                  html.setStyle(this.queryBufferDistance, "display", state);
+                  html.setStyle(this.querybufferUnits, "display", state);
 
                   if (this.cbxBuffer.checked) {
                       if (this.drawBox.drawLayer.graphics[0]) {
@@ -393,22 +383,7 @@ define([
               this.currentAttrs.layerInfo = this.currentAttrs.queryTr.layerInfo;//may be null
               var filterInfo = this.currentAttrs.config.filter;
               var parts = filterInfo.parts;
-              this.currentAttrs.askForValues = array.some(parts, lang.hitch(this, function (item) {
-                  if (item.parts) {
-                      return array.some(item.parts, lang.hitch(this, function (part) {
-                          return part.interactiveObj;
-                      }));
-                  } else {
-                      return item.interactiveObj;
-                  }
-              }));
-
-              if (this.currentAttrs.askForValues) {
-                  html.setStyle(this.parametersDiv, 'display', 'block');
-              }
-              else {
-                  html.setStyle(this.parametersDiv, 'display', 'none');
-              }
+            
 
               query('tr.single-query', this.queriesTbody).removeClass('selected');
               html.addClass(this.currentAttrs.queryTr, 'selected');
@@ -490,37 +465,6 @@ define([
               }));
               return def;
           },
-
-          _onCbxUseSpatialClicked: function () {
-              //if(this.cbxUseSpatial.checked){
-              //  html.setStyle(this.selectSpatialDiv, 'display', 'block');
-              //}
-              //else{
-              //  html.setStyle(this.selectSpatialDiv, 'display', 'none');
-              //}
-
-              //if (this.cbxUseMapExtent.checked) {
-              //  this._onCbxUseMapExtentClicked();
-              //} else {
-              //  this._onCbxDrawGraphicClicked();
-              //}
-
-              //this._resetDrawBox();
-          },
-
-          _onCbxUseMapExtentClicked: function () {
-              if (this.cbxUseMapExtent.checked) {
-                  this._resetDrawBox();
-                  html.setStyle(this.drawBoxDiv, 'display', 'none');
-              }
-          },
-
-          _onCbxDrawGraphicClicked: function () {
-              if (this.cbxDrawGraphic.checked) {
-                  html.setStyle(this.drawBoxDiv, 'display', 'block');
-              }
-          },
-
           _onBtnClearAllClicked: function () {
               this._removeAllResultLayers();
           },
@@ -531,12 +475,8 @@ define([
           },
 
           _resetQueryParamsPage: function () {
-              this.paramsDijit.clear();
               this.cbxOperational.checked = false;
               this.cbxBuffer.checked = false;
-              //this.cbxUseSpatial.checked = false;
-              this.cbxUseSpatial.checked = true;
-              this._onCbxUseSpatialClicked();
               //this._resetDrawBox();
           },
 
@@ -558,8 +498,7 @@ define([
               var layerUrl = this.currentAttrs.config.url;
               // this.btnResultsBack.innerHTML = '&lt; ' + this.nls.parameters;
               var partsObj = lang.clone(this.currentAttrs.config.filter);
-              this.paramsDijit.url = layerUrl;
-              this.paramsDijit.build(partsObj, this.currentAttrs.layerInfo);
+             
 
               //slide
               var showDom = this.queryParams;
@@ -599,18 +538,8 @@ define([
 
               //query{maxRecordCount,resultLayer,where,nextIndex,objectIds}
               //set query.where
-              if (this.currentAttrs.askForValues) {
-                  var newExpr = this.paramsDijit.getNewFilterExpr();
-                  var validExpr = newExpr && typeof newExpr === 'string';
-                  if (!validExpr) {
-                      return;
-                  }
-                  this.currentAttrs.query.where = newExpr;
-              }
-              else {
-                  this.currentAttrs.query.where = this.currentAttrs.config.filter.expr;
-              }
-
+            
+              this.currentAttrs.query.where = this.currentAttrs.config.filter.expr;
               //set query.maxRecordCount
               this.currentAttrs.query.maxRecordCount = layerInfo.maxRecordCount || 1000;
 
@@ -623,26 +552,19 @@ define([
               var where = this.currentAttrs.query.where;
               var geometry = null;
 
-              if (this.cbxUseSpatial.checked) {
-                  if (this.cbxUseMapExtent.checked) {
-                      geometry = this.map.extent;
-                  }
-                  else {
-                      var gs = this.drawBox.drawLayer.graphics;
+              var gs = this.drawBox.drawLayer.graphics;
 
-                      if (gs.length > 0) {
-                          if (this.cbxBuffer.checked && gs.length == 2) {
-                              var g = gs[1];
-                          } else {
-                              var g = gs[0];
-                          }
-                          geometry = g.geometry;
-                      }
+              if (gs.length > 0) {
+                  if (this.cbxBuffer.checked && gs.length == 2) {
+                      var g = gs[1];
+                  } else {
+                      var g = gs[0];
                   }
-                  if (!geometry) {
-                      new Message({ message: this.nls.specifySpatialFilterMsg });
-                      return;
-                  }
+                  geometry = g.geometry;
+              }
+              if (!geometry) {
+                  new Message({ message: this.nls.specifySpatialFilterMsg });
+                  return;
               }
 
               if (this.tempResultLayer) {

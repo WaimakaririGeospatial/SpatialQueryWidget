@@ -321,9 +321,11 @@ define([
                   this._toggleLoading(arguments[0]);
               }));
           },
-          _toggleLoading:function(state){
-              if (state) this.shelter.show()
-              else this.shelter.hide();
+          _toggleLoading: function (state) {
+              if (this.shelter) {
+                  if (state) this.shelter.show();
+                  else this.shelter.hide();
+              }
           },
           _registerBufferCheckBoxClick: function () {
               on(this.cbxBuffer, "change", lang.hitch(this, function () {

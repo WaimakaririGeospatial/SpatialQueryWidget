@@ -163,7 +163,7 @@ function(declare, lang, array, on, _WidgetsInTemplateMixin, BaseWidgetSetting,
       var args = {
         titleLabel: this.nls.setDataSource,
 
-        featureArgs: {
+        dijitArgs: {
           multiple: false,
           createMapResponse: this.map.webMapResponse,
           portalUrl: this.appConfig.portalUrl,

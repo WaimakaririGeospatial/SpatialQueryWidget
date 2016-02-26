@@ -18,6 +18,7 @@ define([
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/query',
+     'dojo/dom-attr',
     'dojo/_base/html',
     'dojo/_base/array',
     'dojo/_base/fx',
@@ -51,7 +52,7 @@ define([
     'jimu/dijit/LoadingShelter',
     'dojo/NodeList-traverse'
 ],
-  function (declare, lang, query, html, array, fx, all, Deferred,topic, on,domQuery, _WidgetsInTemplateMixin,
+  function (declare, lang, query,domAttr, html, array, fx, all, Deferred,topic, on,domQuery, _WidgetsInTemplateMixin,
     TitlePane, Select, NumberSpinner, BaseWidget, Message, DrawBox, jimuUtils, FilterUtils, Parameters,
     EsriQuery, QueryTask, RelationshipQuery, GraphicsLayer, FeatureLayer, SimpleRenderer,
     InfoTemplate, symbolJsonUtils, esriLang, esriRequest, graphicsUtils, Buffer) {
@@ -128,13 +129,19 @@ define([
               this._registerBufferCheckBoxClick();
               
           },
-
+          startup: function () {
+              this.inherited(arguments);
+              this._setVersionTitle();
+          },
           onOpen: function () {
               if (this.tempResultLayer) {
                   this.tempResultLayer.show();
               }
               var popup = domQuery(this.domNode).closest(".jimu-widget-panel")[0];
-              html.setStyle(popup, "min-height", "475px");
+              if (popup) {
+                  html.setStyle(popup, "min-height", "475px");
+              }
+              
           },
 
           onClose: function () {
@@ -1362,7 +1369,38 @@ define([
               });
               this._slide(showDom, -100, 0);
               this._slide(this.queryResults, 0, 100);
-          }
+          },
+          _setVersionTitle: function () {
+              var labelNode = this._getLabelNode(this);
+              var manifestInfo = this.manifest;
+              var devVersion = manifestInfo.version;
+              var devWabVersion = manifestInfo.developedAgainst || manifestInfo.wabVersion;
+              var codeSourcedFrom = manifestInfo.codeSourcedFrom;
+              var client = manifestInfo.client;
 
+              var title = "Dev version: " + devVersion + "\n";
+              title += "Developed/Modified against: WAB" + devWabVersion + "\n";
+              title += "Client: " + client + "\n";
+              if (codeSourcedFrom) {
+                  title += "Code sourced from: " + codeSourcedFrom + "\n";
+              }
+
+              if (labelNode) {
+                  domAttr.set(labelNode, 'title', title);
+              }
+
+          },
+          _getLabelNode: function (widget) {
+              var labelNode;
+              if (!(widget.labelNode) && !(widget.titleLabelNode)) {
+                  if (widget.getParent()) {
+                      labelNode = this._getLabelNode(widget.getParent());
+                  }
+              } else {
+                  labelNode = widget.labelNode || widget.titleLabelNode;
+              }
+              return labelNode;
+
+          }
       });
   });

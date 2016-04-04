@@ -1,0 +1,25 @@
+{
+  "queries": [],
+
+  "bufferSettings": {
+        "invalidRequestMessage":"Invalid buffer request.",
+		"bufferDistanceUnits": [
+			{
+				"unit": "Kilometers",
+				"esriConstant": "UNIT_KILOMETER"
+			},
+			{
+				"unit": "Meters",
+				"esriConstant": "UNIT_METER"
+			},
+			{
+				"unit": "Miles",
+				"esriConstant": "UNIT_STATUTE_MILE"
+			},
+			{
+				"unit": "Feet",
+				"esriConstant": "UNIT_FOOT"
+			}
+		]
+	}
+}
